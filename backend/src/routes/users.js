@@ -64,10 +64,9 @@ router.post('/users/login', [
       return res.status(422).json({ errors: { body: ['邮箱或密码错误'] } });
     }
 
-    const { password: _, ...safeUser } = user;
     const token = jwt.sign({ userId: user.id }, JWT_SECRET, { expiresIn: '7d' });
 
-    res.json({ user: { ...safeUser, token } });
+    res.json({ user: { id: user.id, username: user.username, email: user.email, bio: user.bio, image: user.image, token } });
   } catch (err) {
     console.error('登录错误:', err);
     res.status(500).json({ errors: { body: ['服务器错误'] } });
