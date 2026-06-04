@@ -1,5 +1,7 @@
 const express = require('express');
 const cors = require('cors');
+const path = require('path');
+const { getDb } = require('./db');
 
 const userRoutes = require('./routes/users');
 const articleRoutes = require('./routes/articles');
@@ -36,6 +38,17 @@ app.use((err, req, res, next) => {
 });
 
 app.listen(PORT, () => {
+  // 首次启动时如果数据库为空，自动填充种子数据
+  const db = getDb();
+  const userCount = db.prepare('SELECT COUNT(*) as count FROM users').get().count;
+  if (userCount === 0) {
+    console.log('🔄 检测到空数据库，正在填充种子数据...');
+    try {
+      require(path.join(__dirname, '..', 'seed'));
+    } catch (err) {
+      console.log('💡 运行 npm run seed 可手动填充初始数据');
+    }
+  }
   console.log(`后端服务运行在 http://localhost:${PORT}`);
 });
 
