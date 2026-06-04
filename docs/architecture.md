@@ -54,26 +54,28 @@
 ```
 backend/
 ├── package.json
-├── realworld.db              # SQLite 数据库文件（自动生成）
+├── seed.js                     # 种子数据脚本：首次启动自动填充初始数据
+├── realworld.db                # SQLite 数据库文件（自动生成）
 └── src/
-    ├── index.js              # 入口文件：Express 应用配置、路由挂载
-    ├── db.js                 # 数据库单例：连接管理、表初始化
+    ├── index.js                # 入口文件：Express 应用配置、路由挂载、空库检测
+    ├── db.js                   # 数据库单例：连接管理、表初始化
     ├── middleware/
-    │   └── auth.js           # 认证中间件：JWT验证（必需/可选两种模式）
+    │   └── auth.js             # 认证中间件：JWT验证（必需/可选两种模式）
     ├── routes/
-    │   ├── users.js          # 用户路由：注册/登录/获取/更新当前用户
-    │   ├── articles.js       # 文章路由：CRUD + 收藏 + 评论
-    │   ├── profiles.js       # 用户资料路由：查看/关注/取消关注
-    │   └── tags.js           # 标签路由：获取所有标签
+    │   ├── users.js            # 用户路由：注册/登录/获取/更新当前用户
+    │   ├── articles.js         # 文章路由：CRUD + 收藏 + 评论
+    │   ├── profiles.js         # 用户资料路由：查看/关注/取消关注
+    │   └── tags.js             # 标签路由：获取所有标签
     └── utils/
-        └── slug.js           # 工具函数：文章标题 → URL slug
+        └── slug.js             # 工具函数：文章标题 → URL slug
 ```
 
 ### 2.2 模块划分
 
 | 模块 | 职责 | 依赖 |
 |-----|------|-----|
-| `index.js` | 应用启动、中间件配置、路由注册 | 所有路由模块 |
+| `index.js` | 应用启动、中间件配置、路由注册、空库自动播种 | 所有路由模块, seed.js |
+| `seed.js` | 数据库初始数据填充（7用户+8文章+16评论） | db, bcryptjs, slug |
 | `db.js` | 数据库连接池、表结构初始化 | better-sqlite3 |
 | `middleware/auth.js` | JWT Token 解析与验证 | jsonwebtoken |
 | `routes/users.js` | 用户认证与资料管理 | db, auth, bcryptjs, express-validator |

@@ -101,6 +101,7 @@ npm run dev
 ```
 realworld-project/
 ├── backend/                    # 后端工程
+│   ├── seed.js                 # 数据库种子脚本（首次启动自动填充）
 │   ├── src/
 │   │   ├── index.js            # Express 入口
 │   │   ├── db.js               # 数据库初始化
@@ -171,11 +172,12 @@ realworld-project/
 
 ### 失败案例
 
-详见 [docs/ai-usage.md](./docs/ai-usage.md)，3个典型案例：
+详见 [docs/ai-usage.md](./docs/ai-usage.md)，4个典型案例：
 
 1. **Express 5.x 错误处理中间件失效** — AI 不了解版本间异步错误处理的差异
 2. **React Router v7 API 变更** — AI 使用了已废弃的 `component` prop
 3. **CSS 全局样式污染** — AI 的粗粒度样式影响了不相关的组件
+4. **跨平台中文编码乱码** — Windows Git Bash 的 GBK 编码导致数据库中文乱码
 
 ### 心得
 
